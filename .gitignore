@@ -1,0 +1,21 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Maven
+target/
+
+# Java
+*.class
+
+# Local application data
+vault/
+
+# Environment/secrets
+.env
+*.key
+*.secret
+
+# OS
+.DS_Store
+Thumbs.db
