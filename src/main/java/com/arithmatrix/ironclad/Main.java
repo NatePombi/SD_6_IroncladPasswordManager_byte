@@ -2,38 +2,44 @@ package com.arithmatrix.ironclad;
 
 import com.arithmatrix.ironclad.crypto.EncryptionService;
 import com.arithmatrix.ironclad.model.Credential;
-import com.arithmatrix.ironclad.storage.CredentialStore;
+import com.arithmatrix.ironclad.storagev.CredentialStore;
+import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
+
 
 import javax.crypto.SecretKey;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) throws GeneralSecurityException {
-        EncryptionService encryptionService = new EncryptionService();
+    public static void main(String[] args) throws GeneralSecurityException, IOException {
+        CredentialStore credentialStore = new CredentialStore();
 
-        String masterPassword = "My-master-password";
+        credentialStore.add(Credential.create("Github","demo","demo123"));
+        credentialStore.add(Credential.create("Gmail","G-demo","demo123"));
+        credentialStore.add(Credential.create("Twitter","T-demo","demo123"));
 
-        byte[] salt = encryptionService.generateSalt();
-        byte[] iv = encryptionService.generateIV();
+        String masterPassword = "demo-master-password";
 
-        SecretKey key = encryptionService.deriveKey(masterPassword,salt);
+        Path path = Path.of("vault.enc");
 
-        String originalText = "Ironclad encryption test";
+        VaultStorage vaultStorage = new VaultStorage();
 
-        byte[] encrypt = encryptionService.encrypt(originalText, key, iv);
+        vaultStorage.save(path,credentialStore.getCredentials(),masterPassword);
 
-        String decryptedText = encryptionService.decrypt(encrypt, key, iv);
+        System.out.println("Vault Saved to: " + path.toAbsolutePath());
 
-        System.out.println("Original text: " + originalText);
+        List<Credential> credentials = vaultStorage.load(path,masterPassword);
 
-        System.out.println("Encrypted text: " + encryptionService.encode(encrypt));
+        System.out.println("\n Loaded credentials\n");
 
-        System.out.println("Decrypted text: " + decryptedText);
+        for(Credential credential : credentials){
+            System.out.println(credential);
+        }
 
-
-        System.out.println("Successful: "+ originalText.equals(decryptedText));
 
     }
 }

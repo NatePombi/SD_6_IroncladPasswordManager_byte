@@ -10,6 +10,7 @@ target/
 
 # Local application data
 vault/
+vault.enc
 
 # Environment/secrets
 .env
