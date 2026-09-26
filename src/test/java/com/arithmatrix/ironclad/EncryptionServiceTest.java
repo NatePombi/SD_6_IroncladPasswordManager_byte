@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.crypto.AEADBadTagException;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.GeneralSecurityException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,5 +75,28 @@ public class EncryptionServiceTest {
 
         assertThrows(AEADBadTagException.class,()->
                 encryptionService.decrypt(encrypt,key,differentIV)) ;
+    }
+
+
+    @Test
+    void differentSalt_shouldProduceDifferentText_Fail() throws GeneralSecurityException {
+        EncryptionService encryptionService = new EncryptionService();
+
+        String originalText = "Tester-Text";
+        String masterPassword = "Tester-Password";
+
+        byte[] salt = encryptionService.generateSalt();
+        byte[] iv = encryptionService.generateIV();
+
+        SecretKey key = encryptionService.deriveKey(masterPassword,salt);
+
+        byte[] encrypt = encryptionService.encrypt(originalText,key,iv);
+
+        byte[] differentSalt = encryptionService.generateSalt();
+
+        SecretKey differentKey = encryptionService.deriveKey(masterPassword,differentSalt);
+
+        assertThrows(AEADBadTagException.class,()->
+                encryptionService.decrypt(encrypt,differentKey,iv)) ;
     }
 }

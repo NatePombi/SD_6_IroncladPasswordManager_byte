@@ -58,6 +58,17 @@ public class CredentialStoreTest {
         assertEquals("kev-password",credential2.getPassword());
     }
 
+    @Test
+    void shouldFailUpdateCredential_UnknownService() {
+        CredentialStore credentialStore = new CredentialStore();
+
+        credentialStore.add(Credential.create("Gmail","nate","nate-password"));
+
+        boolean update = credentialStore.update("Netflix","Kev","kev-password");
+
+        assertFalse(update);
+    }
+
 
     @Test
     void shouldDeleteAndRetrieveCredentials() {
@@ -79,6 +90,16 @@ public class CredentialStoreTest {
         assertEquals("Gmail",credential.getService());
         assertEquals("nate",credential.getUsername());
         assertEquals("nate-password",credential.getPassword());
+    }
+
+    @Test
+    void shouldFailDeleteCredential_UnknownService() {
+        CredentialStore credentialStore = new CredentialStore();
+
+        credentialStore.add(Credential.create("Gmail","nate","nate-password"));
+
+        boolean delete = credentialStore.delete("Netflix");
+        assertFalse(delete);
     }
 
 }
