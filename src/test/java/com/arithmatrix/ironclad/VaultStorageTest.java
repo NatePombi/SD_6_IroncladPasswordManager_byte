@@ -85,4 +85,15 @@ public class VaultStorageTest {
 
 
     }
+
+    @Test
+    void loadMissingVault_ShouldFail() throws GeneralSecurityException, IOException {
+        VaultStorage storage = new VaultStorage();
+
+        Path path = vaultPath.resolve("DoesNotExist");
+
+        assertThrows(Exception.class,()->{
+            storage.load(path,"password");
+        });
+    }
 }
