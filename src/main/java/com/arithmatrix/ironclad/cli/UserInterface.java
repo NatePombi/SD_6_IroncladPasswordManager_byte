@@ -1,10 +1,29 @@
 package com.arithmatrix.ironclad.cli;
 
+import com.arithmatrix.ironclad.storagev.CredentialStore;
+import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class UserInterface {
+    private VaultStorage vaultStorage = new VaultStorage();
+    private CredentialStore credentialStore = new CredentialStore();
+    private Path VAULT_PATH = Paths.get("vault.enc");
 
     public void menuInput(){
+
+
+        if(Files.exists(VAULT_PATH)){
+            System.out.println("Existing vault detected");
+        }
+        else {
+            System.out.println("No Vault detected");
+            System.out.println("A new vault will need to be created");
+        }
+
         boolean exit = true;
 
         Scanner scanner = new Scanner(System.in);
