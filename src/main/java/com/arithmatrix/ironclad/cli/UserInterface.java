@@ -23,11 +23,15 @@ public class UserInterface {
         else {
             System.out.println("No Vault detected");
             System.out.println("A new vault will need to be created");
+
+            String masterPassword = createMasterPassword();
+
+            createVault(vaultStorage,credentialStore,masterPassword);
         }
 
-        String masterpassword =readMasterPassword();
+        String masterPassword = readMasterPasswordConfirmation();
 
-        System.out.println("Enter master password:" + masterpassword);
+        System.out.println("Enter master password:" + masterPassword);
 
 
         boolean exit = true;
@@ -87,6 +91,53 @@ public class UserInterface {
         }
 
         char[] password = console.readPassword("Password: ");
+
         return new String(password);
     }
+
+    private String createMasterPassword(){
+
+        while(true){
+            String password = readMasterPassword();
+
+            if(password.isBlank()){
+                System.out.println("Master password cannot be empty");
+
+            }
+
+            String confirmation = readMasterPasswordConfirmation();
+
+            if(!password.equals(confirmation)){
+                System.out.println("Passwords do not match, please try again.");
+            }
+
+            return password;
+        }
+    }
+
+    private String readMasterPasswordConfirmation(){
+         java.io.Console console = System.console();
+
+         if(console == null){
+             throw new IllegalStateException(
+                     "Secure password input unavailable. " +
+                             "Please run Ironclad from a real terminal"
+             );
+         }
+
+         char[] password = console.readPassword("Confirm master password: ");
+
+         return new String(password);
+    }
+
+    private void createVault(VaultStorage vaultStorage, CredentialStore credentialStore, String masterPassword){
+        try{
+            vaultStorage.save(VAULT_PATH,credentialStore.getCredentials(),masterPassword);
+            System.out.println("Successfully created vault");
+        }
+        catch (Exception e){
+            System.out.println("Unable to create vault");
+        }
+    }
+
 }
