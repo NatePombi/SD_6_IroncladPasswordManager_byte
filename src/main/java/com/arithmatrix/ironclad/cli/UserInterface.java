@@ -3,6 +3,7 @@ package com.arithmatrix.ironclad.cli;
 import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
+import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,9 +25,15 @@ public class UserInterface {
             System.out.println("A new vault will need to be created");
         }
 
+        String masterpassword =readMasterPassword();
+
+        System.out.println("Enter master password:" + masterpassword);
+
+
         boolean exit = true;
 
         Scanner scanner = new Scanner(System.in);
+
 
         while(exit){
             menu();
@@ -66,5 +73,20 @@ public class UserInterface {
         System.out.println("6. Exit");
         System.out.println("******************************\n");
 
+    }
+
+    private String readMasterPassword(){
+        java.io.Console console = System.console();
+
+        if(console == null){
+            throw new IllegalStateException(
+                    "Secure password input unavailable. " +
+                    "Please run Ironclad from a real terminal"
+            );
+
+        }
+
+        char[] password = console.readPassword("Password: ");
+        return new String(password);
     }
 }
