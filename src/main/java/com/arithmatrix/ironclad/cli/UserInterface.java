@@ -15,9 +15,11 @@ public class UserInterface {
     private VaultStorage vaultStorage = new VaultStorage();
     private CredentialStore credentialStore = new CredentialStore();
     private Path VAULT_PATH = Paths.get("vault.enc");
+    private InterfaceMethods methods;
 
     public void menuInput(){
-
+        Scanner scanner = new Scanner(System.in);
+        methods = new InterfaceMethods(scanner);
 
         if(Files.exists(VAULT_PATH)){
             System.out.println("Existing vault detected");
@@ -43,7 +45,6 @@ public class UserInterface {
 
         boolean exit = true;
 
-        Scanner scanner = new Scanner(System.in);
 
 
         while(exit){
@@ -53,7 +54,7 @@ public class UserInterface {
             String input = scanner.nextLine();
 
             switch (input){
-                case "1": System.out.println("Adding Credentials");
+                case "1": methods.addCredential(credentialStore);
                         break;
                 case "2": System.out.println("Listing Credentials");
                         break;
