@@ -21,10 +21,12 @@ public class UserInterface {
         Scanner scanner = new Scanner(System.in);
         methods = new InterfaceMethods(scanner);
 
+        String masterPassword = "";
+
         if(Files.exists(VAULT_PATH)){
             System.out.println("Existing vault detected");
 
-            String masterPassword = readMasterPassword();
+             masterPassword = readMasterPassword();
 
             boolean unlock = unlockVault(vaultStorage,credentialStore,masterPassword);
 
@@ -37,7 +39,7 @@ public class UserInterface {
             System.out.println("No Vault detected");
             System.out.println("A new vault will need to be created");
 
-            String masterPassword = createMasterPassword();
+             masterPassword = createMasterPassword();
 
             createVault(vaultStorage,credentialStore,masterPassword);
         }
@@ -54,7 +56,7 @@ public class UserInterface {
             String input = scanner.nextLine();
 
             switch (input){
-                case "1": methods.addCredential(credentialStore);
+                case "1": methods.addCredential(credentialStore,vaultStorage, masterPassword);
                         break;
                 case "2": System.out.println("Listing Credentials");
                         break;
