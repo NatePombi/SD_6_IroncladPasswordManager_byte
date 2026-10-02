@@ -1,5 +1,6 @@
 package com.arithmatrix.ironclad.cli;
 
+import com.arithmatrix.ironclad.model.Credential;
 import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
@@ -7,6 +8,7 @@ import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -19,15 +21,24 @@ public class UserInterface {
 
         if(Files.exists(VAULT_PATH)){
             System.out.println("Existing vault detected");
+
+            String masterPassword = readMasterPassword();
+
+            boolean unlock = unlockVault(vaultStorage,credentialStore,masterPassword);
+
+            if(!unlock){
+                System.out.println("Unable to access vault.");
+                return;
+            }
         }
         else {
             System.out.println("No Vault detected");
             System.out.println("A new vault will need to be created");
+
+            String masterPassword = createMasterPassword();
+
+            createVault(vaultStorage,credentialStore,masterPassword);
         }
-
-        String masterpassword =readMasterPassword();
-
-        System.out.println("Enter master password:" + masterpassword);
 
 
         boolean exit = true;
@@ -87,6 +98,81 @@ public class UserInterface {
         }
 
         char[] password = console.readPassword("Password: ");
+
         return new String(password);
     }
+
+    private String createMasterPassword(){
+
+        while(true){
+            String password = readMasterPassword();
+
+            if(password.isBlank()){
+                System.out.println("Master password cannot be empty");
+                continue;
+
+            }
+
+            String confirmation = readMasterPasswordConfirmation();
+
+            if(!password.equals(confirmation)){
+                System.out.println("Passwords do not match, please try again.");
+                continue;
+            }
+
+            return password;
+        }
+    }
+
+    private String readMasterPasswordConfirmation(){
+         java.io.Console console = System.console();
+
+         if(console == null){
+             throw new IllegalStateException(
+                     "Secure password input unavailable. " +
+                             "Please run Ironclad from a real terminal"
+             );
+         }
+
+         char[] password = console.readPassword("Confirm master password: ");
+
+         return new String(password);
+    }
+
+    private void createVault(VaultStorage vaultStorage, CredentialStore credentialStore, String masterPassword){
+        try{
+            vaultStorage.save(VAULT_PATH,credentialStore.getCredentials(),masterPassword);
+            System.out.println("Successfully created vault");
+        }
+        catch (Exception e){
+            System.out.println("Unable to create vault");
+        }
+    }
+
+    private boolean unlockVault(VaultStorage vaultStorage, CredentialStore credentialStore, String masterPassword){
+
+        try{
+            List<Credential> credentials = vaultStorage.load(VAULT_PATH,masterPassword);
+
+            for(Credential credential : credentials){
+                credentialStore.add(credential);
+            }
+
+
+            System.out.println("Vault unlocked Successfully");
+
+
+            return true;
+
+        }
+
+        catch (Exception e){
+            System.out.println("Unable to unlock vault. "
+            + "Please check your master password.");
+            return false;
+
+        }
+
+    }
+
 }
