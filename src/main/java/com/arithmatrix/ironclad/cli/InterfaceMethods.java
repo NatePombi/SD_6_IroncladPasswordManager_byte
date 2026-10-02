@@ -2,7 +2,9 @@ package com.arithmatrix.ironclad.cli;
 
 import com.arithmatrix.ironclad.model.Credential;
 import com.arithmatrix.ironclad.storagev.CredentialStore;
+import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class InterfaceMethods {
@@ -12,7 +14,7 @@ public class InterfaceMethods {
     }
 
 
-    public void addCredential(CredentialStore credentialStore){
+    public void addCredential(CredentialStore credentialStore, VaultStorage storage, String masterPassword){
 
         System.out.println();
         System.out.println("*** Add Credential ***");
@@ -55,7 +57,16 @@ public class InterfaceMethods {
 
         credentialStore.add(credential);
 
-        System.out.println("Credential added successfully. ");
+        try {
+
+            storage.save(Path.of("vault.enc"),credentialStore.getCredentials(),masterPassword);
+
+            System.out.println("Credential added successfully. ");
+        }
+        catch (Exception e){
+            System.out.println("Credential was added in memory. " +
+                    "but could not be saved to the vault.");
+        }
 
     }
 }
