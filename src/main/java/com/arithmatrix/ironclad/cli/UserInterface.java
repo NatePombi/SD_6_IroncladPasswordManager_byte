@@ -62,7 +62,7 @@ public class UserInterface {
                         break;
                 case  "3": methods.updateCredential(credentialStore,vaultStorage,masterPassword);
                         break;
-                case "4": System.out.println("Deleting Credentials");
+                case "4": methods.deleteCredential(credentialStore,vaultStorage,masterPassword);
                         break;
                 case  "5": System.out.println("Copying password");
                         break;
