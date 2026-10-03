@@ -5,11 +5,13 @@ import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Scanner;
 
 public class InterfaceMethods {
     private Scanner scanner;
+    private Path VAULT_PATH = Paths.get("vault.enc");
     public InterfaceMethods(Scanner scanner){
         this.scanner = scanner;
     }
@@ -60,7 +62,7 @@ public class InterfaceMethods {
 
         try {
 
-            storage.save(Path.of("vault.enc"),credentialStore.getCredentials(),masterPassword);
+            storage.save(VAULT_PATH,credentialStore.getCredentials(),masterPassword);
 
             System.out.println("Credential added successfully. ");
         }
@@ -93,5 +95,71 @@ public class InterfaceMethods {
                     "\tPassword: [Protected]"
             );
         }
+    }
+
+    public void updateCredential(CredentialStore credentialStore,VaultStorage storage, String masterPassword){
+        System.out.println();
+        System.out.println("*** Update Credential ***");
+
+
+        System.out.println("Service: ");
+        String service = scanner.nextLine().trim();
+
+        if(service.isBlank()){
+            System.out.println("Service cannot be empty");
+            return;
+        }
+
+
+        System.out.println("New Username: ");
+        String username = scanner.nextLine().trim();
+
+        if(username.isBlank()){
+            System.out.println("Username cannot be empty");
+            return;
+        }
+
+
+        java.io.Console console = System.console();
+
+        if(console == null){
+            System.out.println(
+                    "Secure password input is unavailable. " +
+                    "Please run Ironclad from a real terminal."
+            );
+            return;
+        }
+
+        char[] passwordChars = console.readPassword("New Password: ");
+
+        String password = new String(passwordChars);
+
+
+        if(password.isBlank()){
+            System.out.println("Password cannot be empty");
+            return;
+        }
+
+
+        boolean updated = credentialStore.update(service,username,password);
+
+        if(!updated){
+            System.out.println("No credentials found for service: " + service);
+            return;
+        }
+
+
+        try{
+            storage.save(VAULT_PATH,credentialStore.getCredentials(),masterPassword);
+
+            System.out.println("Successfully updated successfully");
+        }
+
+        catch (Exception e){
+            System.out.println("Credential was updated in memory. " +
+                    "but could not be saved to the vault.");
+        }
+
+
     }
 }
