@@ -152,7 +152,7 @@ public class InterfaceMethods {
         try{
             storage.save(VAULT_PATH,credentialStore.getCredentials(),masterPassword);
 
-            System.out.println("Successfully updated successfully");
+            System.out.println("Successfully updated credential");
         }
 
         catch (Exception e){
@@ -161,5 +161,37 @@ public class InterfaceMethods {
         }
 
 
+    }
+
+
+    public void deleteCredential(CredentialStore credentialStore, VaultStorage vaultStorage, String masterPassword){
+        System.out.println();
+        System.out.println("*** Delete Credential ***");
+
+        System.out.println("Service: ");
+        String service = scanner.nextLine().trim();
+
+        if(service.isBlank()){
+            System.out.println("Service cannot be empty");
+            return;
+        }
+
+        boolean deleted = credentialStore.delete(service);
+
+        if(!deleted){
+            System.out.println("No Credential found for service: " + service);
+            return;
+        }
+
+        try{
+            vaultStorage.save(VAULT_PATH, credentialStore.getCredentials(),masterPassword);
+
+            System.out.println("Successfully deleted credential");
+        }
+
+        catch (Exception e){
+            System.out.println("Credential was deleted in memory. " +
+                    "but could not be saved to the vault.");
+        }
     }
 }
