@@ -5,6 +5,7 @@ import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Scanner;
 
 public class InterfaceMethods {
@@ -68,5 +69,29 @@ public class InterfaceMethods {
                     "but could not be saved to the vault.");
         }
 
+    }
+
+    public void listCredentials(CredentialStore credentialStore){
+        System.out.println();
+        System.out.println("*** Saved Credentials ***");
+
+        List<Credential> credentials = credentialStore.getCredentials();
+
+        if(credentials.isEmpty()){
+            System.out.println("No Credentials saved");
+        }
+
+        for(int i = 0; i< credentials.size();i++){
+            Credential credential  = credentials.get(i);
+
+            System.out.println((i + 1) + ". " + credential.getService());
+            System.out.println(
+                    "\tUsername: " + credential.getUsername());
+
+
+            System.out.println(
+                    "\tPassword: [Protected]"
+            );
+        }
     }
 }

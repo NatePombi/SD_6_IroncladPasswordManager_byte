@@ -58,7 +58,7 @@ public class UserInterface {
             switch (input){
                 case "1": methods.addCredential(credentialStore,vaultStorage, masterPassword);
                         break;
-                case "2": System.out.println("Listing Credentials");
+                case "2": methods.listCredentials(credentialStore);
                         break;
                 case  "3": System.out.println("Updating Credentials");
                         break;
