@@ -1,5 +1,6 @@
 package com.arithmatrix.ironclad.cli;
 
+import com.arithmatrix.ironclad.clipboard.ClipboardService;
 import com.arithmatrix.ironclad.model.Credential;
 import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
@@ -193,5 +194,32 @@ public class InterfaceMethods {
             System.out.println("Credential was deleted in memory. " +
                     "but could not be saved to the vault.");
         }
+
+    }
+
+    public void copyPassword(CredentialStore credentialStore, ClipboardService clipboardService){
+        System.out.println();
+        System.out.println("*** Copy Password ***");
+
+        System.out.println("Service: ");
+        String service = scanner.nextLine().trim();
+
+        if(service.isBlank()){
+            System.out.println("Service cannot be empty");
+        }
+
+        for(Credential credential: credentialStore.getCredentials()){
+            if(credential.getService().equals(service)){
+                clipboardService.copy(credential.getPassword());
+
+                System.out.println("Password copied to clipboard");
+
+                System.out.println("Clipboard will clear in 15 seconds");
+
+                return;
+            }
+        }
+
+        System.out.println("No credentials found for service: " + service);
     }
 }
