@@ -54,7 +54,7 @@ public class UserInterface {
             menu();
 
             System.out.print("Enter choice: ");
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
 
             switch (input){
                 case "1": methods.addCredential(credentialStore,vaultStorage, masterPassword);
@@ -72,7 +72,7 @@ public class UserInterface {
                            System.out.println("GoodBye!");
                         break;
                 default:
-                    System.out.println("Invalid input. Please try again.");
+                    System.out.println("Invalid input. Please choose a number from 1 to 6.");
             }
         }
     }
