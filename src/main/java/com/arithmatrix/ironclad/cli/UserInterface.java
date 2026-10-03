@@ -1,10 +1,10 @@
 package com.arithmatrix.ironclad.cli;
 
+import com.arithmatrix.ironclad.clipboard.ClipboardService;
 import com.arithmatrix.ironclad.model.Credential;
 import com.arithmatrix.ironclad.storagev.CredentialStore;
 import com.arithmatrix.ironclad.vaultStorage.VaultStorage;
 
-import java.io.Console;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +16,7 @@ public class UserInterface {
     private CredentialStore credentialStore = new CredentialStore();
     private Path VAULT_PATH = Paths.get("vault.enc");
     private InterfaceMethods methods;
+    private ClipboardService clipboardService = new ClipboardService();
 
     public void menuInput(){
         Scanner scanner = new Scanner(System.in);
@@ -64,9 +65,10 @@ public class UserInterface {
                         break;
                 case "4": methods.deleteCredential(credentialStore,vaultStorage,masterPassword);
                         break;
-                case  "5": System.out.println("Copying password");
+                case  "5": methods.copyPassword(credentialStore,clipboardService);
                         break;
                 case "6": exit=false;
+                            clipboardService.shutDown();
                            System.out.println("GoodBye!");
                         break;
                 default:
