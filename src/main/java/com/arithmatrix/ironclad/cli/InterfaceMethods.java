@@ -31,6 +31,10 @@ public class InterfaceMethods {
             return;
         }
 
+        if(exists(credentialStore,service)){
+            System.out.println("A credential for this service already exists");
+        }
+
         System.out.println("Username: ");
         String username = scanner.nextLine().trim();
 
@@ -221,5 +225,17 @@ public class InterfaceMethods {
         }
 
         System.out.println("No credentials found for service: " + service);
+    }
+
+
+    private boolean exists(CredentialStore credentialStore, String service){
+
+        for(Credential credential : credentialStore.getCredentials()){
+            if(service.equals(credential.getService())){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
