@@ -96,4 +96,26 @@ public class VaultStorageTest {
             storage.load(path,"password");
         });
     }
+
+    @Test
+    void emptyVaultShouldLoadAsEmpty() throws Exception{
+        VaultStorage vaultStorage = new VaultStorage();
+
+        Path vault = vaultPath.resolve("vault.enc");
+
+        List<Credential> credentials = List.of();
+
+        vaultStorage.save(
+                vault,
+                credentials,
+                "master-password"
+        );
+
+
+        List<Credential> loadedCredentials = vaultStorage.load(vault,"master-password");
+
+        assertNotNull(loadedCredentials);
+        assertTrue(loadedCredentials.isEmpty());
+    }
+
 }
