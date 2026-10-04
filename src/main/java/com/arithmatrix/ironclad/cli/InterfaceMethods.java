@@ -33,6 +33,7 @@ public class InterfaceMethods {
 
         if(exists(credentialStore,service)){
             System.out.println("A credential for this service already exists");
+            return;
         }
 
         System.out.println("Username: ");
@@ -40,6 +41,7 @@ public class InterfaceMethods {
 
         if(username.isBlank()){
             System.out.println("Username cannot be empty");
+            return;
         }
 
         java.io.Console console = System.console();
@@ -72,8 +74,10 @@ public class InterfaceMethods {
             System.out.println("Credential added successfully. ");
         }
         catch (Exception e){
-            System.out.println("Credential was added in memory. " +
-                    "but could not be saved to the vault.");
+            credentialStore.delete(service);
+            System.out.println("Unable to save credential to vault.");
+
+            System.out.println("The credential was not added");
         }
 
     }
@@ -181,10 +185,23 @@ public class InterfaceMethods {
             return;
         }
 
+        Credential credentialToDelete = null;
+
+        for(Credential credential : credentialStore.getCredentials()){
+            if (credential.getService().equals(service)){
+                credentialToDelete = credential;
+                break;
+            }
+        }
+
+        if( credentialToDelete == null){
+            System.out.println("No Credential found for service: " + service);
+        }
+
         boolean deleted = credentialStore.delete(service);
 
         if(!deleted){
-            System.out.println("No Credential found for service: " + service);
+            System.out.println("Unable to delete credential");
             return;
         }
 
@@ -195,8 +212,11 @@ public class InterfaceMethods {
         }
 
         catch (Exception e){
-            System.out.println("Credential was deleted in memory. " +
-                    "but could not be saved to the vault.");
+            credentialStore.add(credentialToDelete);
+
+            System.out.println("Unable to the updated vault.");
+
+            System.out.println("The Credential was not deleted");
         }
 
     }
