@@ -172,8 +172,9 @@ public class UserInterface {
         }
 
         catch (Exception e){
-            System.out.println("Unable to unlock vault. "
-            + "Please check your master password.");
+            System.out.println("Unable to unlock vault. ");
+            System.out.println("This password may be incorrect. " +
+                    "or the vault may be damaged or unreadable");
             return false;
 
         }
