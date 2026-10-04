@@ -24,27 +24,29 @@ public class UserInterface {
 
         String masterPassword = "";
 
-        if(Files.exists(VAULT_PATH)){
-            System.out.println("Existing vault detected");
+        while(true) {
+            if (Files.exists(VAULT_PATH)) {
+                System.out.println("Existing vault detected");
 
-             masterPassword = readMasterPassword();
+                masterPassword = readMasterPassword();
 
-            boolean unlock = unlockVault(vaultStorage,credentialStore,masterPassword);
+                boolean unlock = unlockVault(vaultStorage, credentialStore, masterPassword);
 
-            if(!unlock){
-                System.out.println("Unable to access vault.");
-                return;
+                if (!unlock) {
+                    System.out.println("Unable to access vault.\n");
+                    continue;
+                }
+                break;
+            } else {
+                System.out.println("No Vault detected");
+                System.out.println("A new vault will need to be created");
+
+                masterPassword = createMasterPassword();
+
+                createVault(vaultStorage, credentialStore, masterPassword);
+                break;
             }
         }
-        else {
-            System.out.println("No Vault detected");
-            System.out.println("A new vault will need to be created");
-
-             masterPassword = createMasterPassword();
-
-            createVault(vaultStorage,credentialStore,masterPassword);
-        }
-
 
         boolean exit = true;
 
