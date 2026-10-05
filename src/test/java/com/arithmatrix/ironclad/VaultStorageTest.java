@@ -28,7 +28,7 @@ public class VaultStorageTest {
 
         String masterPassword = "MasterPassword";
 
-        Path path = vaultPath.resolve("vault.enc");
+        Path path = vaultPath.resolve("vaultTest.enc");
 
         storage.save(path,credentials,masterPassword);
 
@@ -54,7 +54,7 @@ public class VaultStorageTest {
 
         String masterPassword = "MasterPassword";
 
-        Path path = vaultPath.resolve("vault.enc");
+        Path path = vaultPath.resolve("vaultTest.enc");
 
         storage.save(path,credentials,masterPassword);
 
@@ -75,7 +75,7 @@ public class VaultStorageTest {
         String masterPassword = "MasterPassword";
 
 
-        Path path = vaultPath.resolve("vault.enc");
+        Path path = vaultPath.resolve("vaultTest.enc");
 
         storage.save(path,credentials,masterPassword);
 
@@ -101,7 +101,7 @@ public class VaultStorageTest {
     void emptyVaultShouldLoadAsEmpty() throws Exception{
         VaultStorage vaultStorage = new VaultStorage();
 
-        Path vault = vaultPath.resolve("vault.enc");
+        Path vault = vaultPath.resolve("vaultTest.enc");
 
         List<Credential> credentials = List.of();
 
