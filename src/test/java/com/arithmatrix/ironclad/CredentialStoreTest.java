@@ -67,6 +67,10 @@ public class CredentialStoreTest {
         boolean update = credentialStore.update("Netflix","Kev","kev-password");
 
         assertFalse(update);
+
+        boolean notUpdated = credentialStore.getCredentials().stream().map(cred -> cred.getService().equals("Gmail")).findFirst().isPresent();
+
+        assertTrue(notUpdated);
     }
 
 
