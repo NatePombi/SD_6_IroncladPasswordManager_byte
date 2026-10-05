@@ -170,3 +170,87 @@ Copies passwords to the system clipboard and attempts to clear them after 15 sec
 * Additional vault corruption recovery mechanisms
 * Security review and penetration testing
 * More robust configuration management
+
+---
+
+## Internship Deliverables
+
+This project was developed as part of the **ArithMatrix Virtual Internship Program 2026 — Software Development**.
+
+### GitHub Repository
+
+The complete source code is maintained in the public GitHub repository.
+
+### Sample Encrypted Vault
+
+A sample encrypted vault can be generated locally by running Ironclad and creating a vault.
+
+Real passwords and personal credentials should never be committed to the repository.
+
+### Application Demonstration
+
+A terminal screenshot or GIF demonstrating the following workflow will be included with the project:
+
+1. Starting Ironclad
+2. Creating or unlocking the vault
+3. Adding a credential
+4. Listing credentials
+5. Updating a credential
+6. Deleting a credential
+7. Copying a password to the clipboard
+8. Exiting the application
+
+## Development
+
+This project was developed using Java and Maven with a focus on:
+
+* Object-oriented programming
+* Secure cryptography
+* File persistence
+* Command-line application design
+* Automated testing
+* Error handling
+* Git-based version control
+
+
+---
+
+## Screenshot Sample
+
+## Terminal creating vault
+
+![Credential sample](.docs/screenshots/terminal-Create-vault.png)
+
+## Created Vault 
+
+![Credential sample](.docs/screenshots/vault-created.png)
+
+
+## Terminal adding demo credential
+![Credential sample](.docs/screenshots/terminal-add-demo-cred.png)
+
+## Terminal adding Second demo credential
+
+![Credential sample](.docs/screenshots/terminal-add-second-cred.png)
+
+## Terminal showing list of demo
+![Credential sample](.docs/screenshots/terminal-list-multiple-cred.png)
+
+## Terminal Updating credential
+
+![Credential sample](.docs/screenshots/terminal-update-second-cred.png)
+
+## Terminal showing updated credential
+![Credential sample](.docs/screenshots/terminal-show-updated.png)
+
+## Terminal delete demo credential
+
+![Credential sample](.docs/screenshots/terminal-delete-cred.png)
+
+## Terminal show that demo was deleted
+![Credential sample](.docs/screenshots/terminal-show-deleted.png)
+
+## Show Vault data, no passwords or sensitive data exposed 
+
+![Credential sample](.docs/screenshots/vault-details.png)
+
