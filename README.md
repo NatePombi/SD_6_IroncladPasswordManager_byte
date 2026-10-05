@@ -254,3 +254,5 @@ This project was developed using Java and Maven with a focus on:
 
 ![Credential sample](.docs/screenshots/vault-details.png)
 
+
+.
