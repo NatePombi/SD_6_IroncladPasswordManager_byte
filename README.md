@@ -1,10 +1,5 @@
 # Ironclad Password Manager
 
-[![codecov](https://codecov.io/gh/NatePombi/finance-tracker-api-aws/graph/badge.svg?token=WSUBYBXDIB)](https://codecov.io/gh/NatePombi/finance-tracker-api-aws)
-![Java](https://img.shields.io/badge/Java-17-blue)
-![Build](https://github.com/NatePombi/finance-tracker-api/actions/workflows/test.yml/badge.svg)
-![Last Commit](https://img.shields.io/github/last-commit/NatePombi/finance-tracker-api-aws)
-
 Ironclad is a command-line password manager built in Java. It securely stores credentials inside an encrypted local vault and provides an interactive CLI for managing them.
 
 ---
